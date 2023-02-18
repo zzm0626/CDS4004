@@ -1,0 +1,147 @@
+<html lang="en">
+
+<head>
+	<style>	
+	body {
+    	align-items: center;
+    	display: flex;
+    	flex-direction: column;
+    	font-family: 'Work Sans', sans-serif;
+    	min-height: 100vh;
+    	padding-top: 3%;
+	}
+	body {
+		background-image: linear-gradient(100deg, #575656, #062e3f);
+    	color: #ffdfdb;
+	}
+	h2 {
+		font-weight:400;
+		font-style: normal;
+		font-size: 75px;
+    	white-space: pre;
+		letter-spacing: 0.20rem;
+    	margin-top: 50px;
+    	margin-bottom: 20px;
+		-webkit-animation:bounce 2s infinite;
+  	}
+	@-webkit-keyframes bounce{0%,100%,20%,50%,80%{
+		      -webkit-transform:translateY(0);
+		   }40%{
+		      -webkit-transform:translateY(-30px);
+		   }60%{
+		      -webkit-transform:translateY(-15px);
+		   }
+	}
+	textarea{
+		padding: 20px;
+    	font-size: 20px;
+    	border-radius: 25px;
+		width:700px;
+		height:80px;
+    	transition: background-color 200ms ease-in-out;
+	}
+	button:hover {
+    	cursor: pointer;
+	}
+	button {
+    	background-color: rgb(247, 226, 223);
+    	color: rgb(0, 0, 0);
+	}
+	button:hover{
+    	background-color: white;
+    	box-shadow: #fff8 0 0 10px;
+	}
+	button {
+    	padding: 10px;
+    	font-size: 17px;
+    	border-radius: 15px;
+    	min-width: 100px;
+	}
+	.achieved {
+            text-decoration: line-through;
+        }
+	
+	li {
+		font-size: 30px;
+	}
+		li:nth-child(3n) {
+            color: 	#FA8072 ;
+    }
+		li:nth-child(3n+1) {
+            color: 	#ADD8E6 ;
+    }
+		li:nth-child(3n+2) {
+            color: #E8CCFF;
+    }
+	</style>
+</head>
+
+<body>
+		<h2>To Do List.</h2>
+		<textarea id='text' rows="3" placeholder="Dinner,1; Exercise,2; Study,3"></textarea> 
+		<br/>
+		<div class="divButton">
+			<button id='btn_add'>Add</button>
+			<button id='btn_hide'>Toggle</button>
+		</div>
+		
+		<ol id='order_list'>
+		</ol>
+</body>
+
+
+	<script>
+
+	const btnAdd = document.getElementById("btn_add");
+	const btnHide = document.getElementById("btn_hide");
+	const text =document.getElementById("text");
+	const aOl=document.getElementById("order_list");
+	let conceal = false;
+	
+	//Button-function
+	btnAdd.onclick = addNewTodo;
+	btnHide.onclick = hideAcievements;
+
+	//Toggle
+	function hideAcievements(){
+		var close=document.getElementsByClassName("achieved");
+		var x;
+		conceal=!conceal
+    	for (x=0; x<close.length; x++){
+        	if(conceal){
+				close[x].style.display="none";
+			}else{
+				close[x].style.display="list-item";	
+			}
+    }
+	}
+    //One click to mark
+	function changeFormat(e) {
+		target=e.target
+        if (target.classList.contains("achieved") === false) {
+            target.classList.add("achieved");
+        } else {
+            target.classList.remove("achieved");
+        }
+    }
+    //double click to delete
+	function deleteTask(e) {
+		target=e.target
+        if (confirm("Are you sure you want to delete?")) {
+            target.remove();
+        }
+    }
+	//Add new to do
+	function addNewTodo(){
+		newText=text.value.split(";");
+		for (let char of newText) {
+            let char1 = char.split(",");
+			var newLi=document.createElement("li");
+			newLi.innerHTML= char1[0];
+			newLi.onclick = changeFormat;
+            newLi.ondblclick = deleteTask;
+            aOl.insertBefore(newLi, aOl.children[parseInt(char1[1]) - 1]);
+		}
+	}
+	</script>
+</html>
